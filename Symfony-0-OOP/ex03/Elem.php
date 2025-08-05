@@ -8,6 +8,11 @@ class Elem
 
     function __construct(string $element, $content = '')
     {
+        // Validation de la balise dans le constructeur
+        if (!in_array($element, self::$validTags)) {
+            throw new InvalidArgumentException("Balise HTML invalide : {$element}");
+        }
+        
         $this->element = $element;
         $this->content = $content;
     }
@@ -26,34 +31,31 @@ class Elem
     }
 
     public function getHTML(int $indentLevel = 0): string
-	{
-		if (!in_array($this->element, self::$validTags)) {
-			throw new InvalidArgumentException("Balise HTML invalide : {$this->element}");
-		}
+    {
+        // Plus besoin de vérifier ici car c'est fait dans le constructeur
+        $indent = str_repeat("  ", $indentLevel);
+        $html = "{$indent}<{$this->element}>";
 
-		$indent = str_repeat("  ", $indentLevel); // 2 espaces par niveau
-		$html = "{$indent}<{$this->element}>";
+        if (is_array($this->content)) {
+            $html .= "\n";
+            foreach ($this->content as $child) {
+                if ($child instanceof Elem) {
+                    $html .= $child->getHTML($indentLevel + 1) . "\n";
+                } else {
+                    $html .= str_repeat("  ", $indentLevel + 1) . htmlspecialchars((string)$child) . "\n";
+                }
+            }
+            $html .= "{$indent}</{$this->element}>";
+        } else {
+            if ($this->content instanceof Elem) {
+                $html .= "\n" . $this->content->getHTML($indentLevel + 1) . "\n" . "{$indent}</{$this->element}>";
+            } else {
+                $html .= htmlspecialchars((string)$this->content) . "</{$this->element}>";
+            }
+        }
 
-		if (is_array($this->content)) {
-			$html .= "\n";
-			foreach ($this->content as $child) {
-				if ($child instanceof Elem) {
-					$html .= $child->getHTML($indentLevel + 1) . "\n";
-				} else {
-					$html .= str_repeat("  ", $indentLevel + 1) . htmlspecialchars((string)$child) . "\n";
-				}
-			}
-			$html .= "{$indent}</{$this->element}>";
-		} else {
-			if ($this->content instanceof Elem) {
-				$html .= "\n" . $this->content->getHTML($indentLevel + 1) . "\n" . "{$indent}</{$this->element}>";
-			} else {
-				$html .= htmlspecialchars((string)$this->content) . "</{$this->element}>";
-			}
-		}
-
-		return $html;
-	}
+        return $html;
+    }
 }
 
 ?>

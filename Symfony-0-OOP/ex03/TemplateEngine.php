@@ -13,7 +13,7 @@ class TemplateEngine
 
 	public function createFile(string $fileName): void
 	{
-		$html = $this->elem->getHTML(); // Génère l'arbre HTML complet
+		$html = $this->elem->getHTML();
 
 		$result = file_put_contents($fileName, $html);
 
@@ -23,7 +23,7 @@ class TemplateEngine
 		}
 		else
 		{
-			echo "Le fichier $fileName a été créé avec succès.\n";
+			echo "\n" . "Le fichier $fileName a été créé avec succès.\n";
 		}
 	}
 }

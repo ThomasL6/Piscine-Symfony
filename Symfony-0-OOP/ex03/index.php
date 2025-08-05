@@ -2,21 +2,22 @@
 
 require_once 'Elem.php';
 
-require_once 'Elem.php';
-require_once 'TemplateEngine.php';
+try {
+    echo "=== TEST NORMAL ===\n";
+    $elem = new Elem('html');
+    $body = new Elem('body');
+    $body->pushElement(new Elem('p', 'Lorem ipsum'));
+    $elem->pushElement($body);
+    
+    echo $elem->getHTML();
+    echo "\n\n";
 
-$html = new Elem('html');
-$body = new Elem('body');
-$h1 = new Elem('h1', 'Hello');
-$p = new Elem('p', 'Lorem ipsum');
-
-$body->pushElement($h1);
-$body->pushElement($p);
-$html->pushElement($body);
-
-// Crée le moteur de template avec ton arbre Elem
-$template = new TemplateEngine($html, 'template.html');
-$template->createFile('output.html');
-
+	$invalid = new Elem('undefined'); // Cette ligne devrait lever une exception
+    
+} catch (InvalidArgumentException $e) {
+    echo "Exception capturée : " . $e->getMessage() . "\n";
+} catch (Exception $e) {
+    echo "Erreur générale : " . $e->getMessage() . "\n";
+}
 
 ?>
