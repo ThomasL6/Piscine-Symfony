@@ -7,8 +7,10 @@ require_once 'TemplateEngine.php';
 try {
 	$elem = new Elem('html');
 	$body = new Elem('body');
+	$div = new Elem('div');
 	$body->pushElement(new Elem('p', 'Lorem ipsum', ['class' => 'text-muted']));
 	$elem->pushElement($body);
+	$body->pushElement($div);
 	
 	echo $elem->getHTML();
 	

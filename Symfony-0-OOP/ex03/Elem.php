@@ -8,7 +8,6 @@ class Elem
 
     function __construct(string $element, $content = '')
     {
-        // Validation de la balise dans le constructeur
         if (!in_array($element, self::$validTags)) {
             throw new InvalidArgumentException("Balise HTML invalide : {$element}");
         }
