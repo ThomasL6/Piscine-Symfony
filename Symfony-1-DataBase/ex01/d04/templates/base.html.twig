@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>
+        {% block title %}
+        Animals Articles
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>Animals Encyclopedia</h1>
+
+    <p>
+        Discover interesting facts about animals
+    </p>
+</header>
+
+<nav>
+    <ul>
+    {% for item in navigation %}
+        {% if app.request.pathInfo != '/' and app.request.pathInfo != '/e01/index' and app.request.pathInfo != '/e01/home' %}
+            <li>
+                <a href="/e01/{{ item.url }}">
+                    {{ item.name }}
+                </a>
+            </li>
+        {% elseif item.url != 'index' %}
+            <li>
+                <a href="/e01/{{ item.url }}">
+                    {{ item.name }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+</nav>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <p>Symfony Exercise - E01</p>
+    <p>Animal articles project using Twig © 2026</p>
+</footer>
+
+</body>
+
+</html>

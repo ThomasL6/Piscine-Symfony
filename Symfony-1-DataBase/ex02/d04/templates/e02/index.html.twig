@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+	{% block body %}
+
+		<h2>Notes form</h2>
+
+		{{ form_start(form) }}
+
+		{{ form_row(form.message) }}
+
+		{{ form_row(form.timestamp) }}
+
+		{{ form_row(form.submit) }}
+
+		{{ form_end(form) }}
+
+		{% if last_line %}
+			<h3>Last line added</h3>
+
+			<p>
+				{{ last_line }}
+			</p>
+	{% endif %}
+
+{% endblock %}

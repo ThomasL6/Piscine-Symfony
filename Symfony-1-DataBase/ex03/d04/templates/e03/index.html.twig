@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h2>Color shades</h2>
+
+<table>
+
+    <tr>
+    {% for color in colors %}
+        <th>
+            {{ color|capitalize }}
+        </th>
+    {% endfor %}
+    </tr>
+
+    {% for row in shades %}
+        <tr>
+
+        {% for color in colors %}
+            <td
+                class="color-cell"
+                style="background-color: {{ row[color] }};"
+            >
+            </td>
+        {% endfor %}
+
+        </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
