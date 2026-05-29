@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    ORM CRUD Exercise
+{% endblock %}
+
+{% block body %}
+
+<h1>⚡ Gestion des Utilisateurs (ORM)</h1>
+
+{% if message is not empty %}
+
+    {% if 'successfully' in message %}
+        <p style="color: green;">
+            {{ message }}
+        </p>
+    {% else %}
+        <p style="color: red;">
+            {{ message }}
+        </p>
+    {% endif %}
+
+{% endif %}
+
+<h2>Créer un utilisateur</h2>
+
+{{ form_start(form, {
+    'method': 'POST',
+    'attr': {
+        'novalidate': 'novalidate'
+    }
+}) }}
+
+    {% for child in form %}
+
+        {% if child.vars.name != '_token' %}
+
+            <div style="margin-bottom: 15px;">
+
+                {{ form_label(child) }}
+
+                <br>
+
+                {{ form_widget(child) }}
+
+                <br>
+
+                {{ form_errors(child) }}
+
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+    <button type="submit">
+        Ajouter
+    </button>
+
+{{ form_end(form) }}
+
+<hr>
+
+<h2>Liste des utilisateurs</h2>
+
+<table border="1" cellpadding="10">
+
+    <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Enabled</th>
+            <th>Birthdate</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% if users is empty %}
+
+            <tr>
+                <td colspan="8">
+                    Aucun utilisateur
+                </td>
+            </tr>
+
+        {% else %}
+
+            {% for user in users %}
+
+                <tr>
+
+                    <td>{{ user.id }}</td>
+
+                    <td>{{ user.username }}</td>
+
+                    <td>{{ user.name }}</td>
+
+                    <td>{{ user.email }}</td>
+
+                    <td>
+
+                        {% if user.enabled %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ user.birthdate|date('Y-m-d H:i') }}
+                    </td>
+
+                    <td>{{ user.address }}</td>
+
+                    <td>
+
+                        <a
+                            href="{{ path('app_ormcrud_delete', { id: user.id }) }}"
+                            onclick="return confirm('Delete this user?')"
+                        >
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        {% endif %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ORM CRUD Exercise - Gestion des Utilisateurs{% endblock %}
+
+{% block body %}
+
+<h1>⚡ Gestion des Utilisateurs (ORM)</h1>
+
+{% if message is not empty %}
+    {% if 'successfully' in message %}
+        <div class="alert alert-success">
+            ✓ {{ message }}
+        </div>
+    {% elseif 'Error' in message or 'exists' in message %}
+        <div class="alert alert-danger">
+            ✗ {{ message }}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            ⓘ {{ message }}
+        </div>
+    {% endif %}
+{% endif %}
+
+<form method="POST">
+    <h2>Créer un nouvel utilisateur</h2>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    {% for child in form %}
+        {% if child.vars.name != '_token' %}
+            <div class="form-group">
+                {{ form_label(child, null, {'label_attr': {'class': 'form-label'}}) }}
+                {% if child.vars.compound %}
+                    {{ form_widget(child) }}
+                {% else %}
+                    {{ form_widget(child, {'attr': {'class': 'form-control'}}) }}
+                {% endif %}
+                {{ form_errors(child, {'attr': {'class': 'form-error'}}) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">
+        ➕ Ajouter l'utilisateur
+    </button>
+
+    {{ form_end(form) }}
+
+</form>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Nom complet</th>
+                <th>Email</th>
+                <th>Activé</th>
+                <th>Date de naissance</th>
+                <th>Adresse</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if users is empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        Aucun utilisateur pour le moment. Créez-en un!
+                    </td>
+                </tr>
+            {% else %}
+                {% for user in users %}
+                    <tr>
+                        <td><strong>#{{ user.id }}</strong></td>
+                        <td><code>{{ user.username }}</code></td>
+                        <td>{{ user.name }}</td>
+                        <td><a href="mailto:{{ user.email }}" style="color: var(--primary-color); text-decoration: none;">{{ user.email }}</a></td>
+                        <td>
+                            {% if user.enabled %}
+                                <span class="badge badge-success">✓ Oui</span>
+                            {% else %}
+                                <span class="badge badge-danger">✗ Non</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.birthdate|date('Y-m-d H:i') }}</td>
+                        <td>{{ user.address }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

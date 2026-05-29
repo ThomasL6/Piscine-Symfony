@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>ORM Exercise</h1>
+
+<a href="{{ path('app_orm_create') }}">
+    Create users table
+</a>
+
+{% if message is defined %}
+    <p>{{ message }}</p>
+{% endif %}
+
+{% endblock %}

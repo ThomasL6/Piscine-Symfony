@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SQL CRUD Exercise - Gestion des Utilisateurs{% endblock %}
+
+{% block body %}
+
+<h1>⚡ Gestion des Utilisateurs</h1>
+
+{% if message is defined %}
+    {% if 'successfully' in message %}
+        <div class="alert alert-success">
+            ✓ {{ message }}
+        </div>
+    {% elseif 'Error' in message %}
+        <div class="alert alert-danger">
+            ✗ {{ message }}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            ⓘ {{ message }}
+        </div>
+    {% endif %}
+{% endif %}
+
+<form action="{{ path('app_sqlcrud_add') }}" method="POST">
+    <h2>Créer un nouvel utilisateur</h2>
+
+    <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        required
+    >
+
+    <input
+        type="text"
+        name="name"
+        placeholder="Name"
+        required
+    >
+
+    <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+    >
+
+    <div class="checkbox-wrapper">
+        <input
+            type="checkbox"
+            id="enable"
+            name="enable"
+        >
+        <label for="enable">Compte activé</label>
+    </div>
+
+    <input
+        type="datetime-local"
+        name="birthdate"
+        required
+    >
+
+    <textarea
+        name="address"
+        placeholder="Address"
+        required
+    ></textarea>
+
+    <button type="submit">
+        ➕ Ajouter l'utilisateur
+    </button>
+
+</form>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Nom complet</th>
+                <th>Email</th>
+                <th>Activé</th>
+                <th>Date de naissance</th>
+                <th>Adresse</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if users is empty %}
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        Aucun utilisateur pour le moment. Créez-en un!
+                    </td>
+                </tr>
+            {% else %}
+                {% for user in users %}
+                    <tr>
+                        <td><strong>#{{ user.id }}</strong></td>
+                        <td><code>{{ user.username }}</code></td>
+                        <td>{{ user.name }}</td>
+                        <td><a href="mailto:{{ user.email }}" style="color: var(--primary-color); text-decoration: none;">{{ user.email }}</a></td>
+                        <td>
+                            {% if user.enabled %}
+                                <span class="badge badge-success">✓ Oui</span>
+                            {% else %}
+                                <span class="badge badge-danger">✗ Non</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.birthdate }}</td>
+                        <td>{{ user.address }}</td>
+                        <td> <a href="{{ path('app_sqlcrud_delete', { id: user.id }) }}" onclick="return confirm('Delete this user?')" class="delete-btn" >Delete </a> </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

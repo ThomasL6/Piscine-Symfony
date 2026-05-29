@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>SQL Exercise</h1>
+
+<a href="{{ path('app_sql_create_table') }}">
+    Create users table
+</a>
+
+{% if message is defined %}
+    <p>{{ message }}</p>
+{% endif %}
+
+{% endblock %}
